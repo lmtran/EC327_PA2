@@ -2,6 +2,7 @@
 #include <fstream> // for reading & writing to file
 #include <vector> // for checkCode
 #include <iterator> // for checkCode
+#include <string> // for readFile fn (reading whole line at a time)
 #include <cmath>
 #include <ctime> // for lucky
 #include "pa2Functions.h"
@@ -90,7 +91,12 @@ R
 
     ifstream input(filename);
     string line;
-    while (input >> line){
+    /*
+    using get line function in <string> lib lets us read a whole line at a time
+    so that loop execution displays on one line like in the file
+    */
+   
+    while (getline(input, line)){
         cout << line << endl;
     }
     input.close();

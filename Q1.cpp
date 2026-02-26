@@ -144,7 +144,7 @@ int main(){
             } else if (checkCode(code)) {
                 // any other valid code
                 cin >> doubFirst >> doubLast >> delta;
-            }
+            } 
 
             // make switch cases for all
             int ans;
