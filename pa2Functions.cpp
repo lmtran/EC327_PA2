@@ -11,7 +11,7 @@
 using namespace std;
 
 // both defined as extern in header file
-ofstream file_stream; 
+ofstream fileStream; 
 extern const int ENTRIES = 10;
 
 
@@ -79,7 +79,7 @@ a file ends when the quit command is provided
     // cout << "line 76" << endl;
     // *output << "test" << endl;
     // cout << "Begin Writing to File " << endl;
-    file_stream.open(filename);
+    fileStream.open(filename);
 //    output << "opened output" << endl;
 //    *file_pointer << "test";
 }

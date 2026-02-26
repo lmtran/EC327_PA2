@@ -4,32 +4,35 @@
 
 using namespace std;
 
+bool writeBool = false;
 
-void helperWriteToFile(ofstream* file_pointer, double result){
+void helperWriteToFile(double result){
     /*
     helper function to determine if pointer is set to null 
     if file_pointer = null: just cout
     if file_pointer != null: cout and write to file
+
+    when passing double, means calling in loop --> separate by spaces
     */
-    if (file_stream.is_open()){
+    if (!fileStream.is_open()){
         //just cout
-        cout << result << endl;
+        cout << result << ' ';
     } else {
-        cout << result << endl;
-        file_stream << result << endl;
+        cout << result << ' ';
+        fileStream << result << ' ';
     }
     return;
 }
 
 //overload to accept int type result
 void helperWriteToFile(int result){
-    if (file_stream.is_open()){
+    if (!fileStream.is_open()){
     //just cout
         cout << result << endl;
     } else {
         cout << result << endl;
         //cout << file_pointer << endl; 
-        file_stream << result << endl;
+        fileStream << result << endl;
     }
     return;
 }
@@ -45,18 +48,14 @@ void executeInLoop(double first, double last, double delta, double(*fn_ptr)(doub
     double fn_val = first; //initially = first
     while (count < ENTRIES && fn_val <= last){
         double result = fn_ptr(fn_val); // call fn with pointer
-       cout << result << endl; 
-
-       // write to file if filepointer exists
-    //    if (file_pointer != nullptr){
-    //            *file_pointer << result << endl;
-    //        }
+//        cout << result << endl;  // debug
 
         helperWriteToFile(result);
 
         fn_val += delta; //step up fn_val
         count++;
     }
+    cout << endl;
     return;
 }
 
@@ -78,6 +77,11 @@ int main(){
             return 0; // exit whole program
         } else {
             // at this point we have a valid code
+
+            // if writeDataToFile has been called, record the codes on each line
+            if (fileStream.is_open()){
+                fileStream << code << endl;
+            }
 
             // convert code to capital if necessary
             if (code > 96){
@@ -168,6 +172,7 @@ int main(){
                     break;
 
                 case 'O':
+                    writeBool = true;
                     writeDataToFile(filename.c_str());
                     break;
 
