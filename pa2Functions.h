@@ -1,11 +1,11 @@
 #ifndef PA2FUNCTIONS_H
 #define PA2FUNCTIONS_H
-#include <iostream>
-#include <fstream> // for reading & writing to file
-#include <vector> // for checkCode
-#include <iterator> // for checkCode
-#include <cmath>
-#include <ctime> // for lucky
+// #include <iostream>
+// #include <fstream> // for reading & writing to file
+// #include <vector> // for checkCode
+// #include <iterator> // for checkCode
+// #include <cmath>
+// #include <ctime> // for lucky
 
 using namespace std;
 

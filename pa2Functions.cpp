@@ -1,9 +1,9 @@
-// #include <iostream>
-// #include <fstream> // for reading & writing to file
-// #include <vector> // for checkCode
-// #include <iterator> // for checkCode
-// #include <cmath>
-// #include <ctime> // for lucky
+#include <iostream>
+#include <fstream> // for reading & writing to file
+#include <vector> // for checkCode
+#include <iterator> // for checkCode
+#include <cmath>
+#include <ctime> // for lucky
 #include "pa2Functions.h"
 
 #define PI 3.14159
@@ -11,8 +11,8 @@
 using namespace std;
 
 // both defined as extern in header file
-//ofstream* file_pointer = nullptr; 
-//extern const int ENTRIES = 10;
+ofstream* file_pointer = nullptr; 
+extern const int ENTRIES = 10;
 
 
 int factorial(int); // prototype for recursion

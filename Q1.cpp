@@ -5,21 +5,21 @@
 using namespace std;
 
 
-// void helperWriteToFile(ofstream* file_pointer, double result){
-//     /*
-//     helper function to determine if pointer is set to null 
-//     if file_pointer = null: just cout
-//     if file_pointer != null: cout and write to file
-//     */
-//     if (file_pointer == nullptr){
-//         //just cout
-//         cout << result << endl;
-//     } else {
-//         cout << result << endl;
-//         *file_pointer << result << endl;
-//     }
-//     return;
-// }
+void helperWriteToFile(ofstream* file_pointer, double result){
+    /*
+    helper function to determine if pointer is set to null 
+    if file_pointer = null: just cout
+    if file_pointer != null: cout and write to file
+    */
+    if (file_pointer == nullptr){
+        //just cout
+        cout << result << endl;
+    } else {
+        cout << result << endl;
+        *file_pointer << result << endl;
+    }
+    return;
+}
 
 
 //overload to accept int type result
