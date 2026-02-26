@@ -19,7 +19,7 @@ void helperWriteToFile(double result){
     if (fileStream != NULL){
         // fileStream should be opened
         cout << result << endl;
-        *fileStream << result << endl;
+        *fileStream << result << ' ';
     } else{
         cout << result << endl;
     }
@@ -61,8 +61,9 @@ void helperWriteToFile(int result){
     return;
 }
 
+
 // function to execute in loop
-void executeInLoop(double first, double last, double delta, double(*fn_ptr)(double), string filename = ""){
+void executeInLoop(double first, double last, double delta, double(*fn_ptr)(double)){
     if (delta <= 0 || first > last) {
         cout << "No computation needed." << endl;
         return;
@@ -79,7 +80,12 @@ void executeInLoop(double first, double last, double delta, double(*fn_ptr)(doub
         fn_val += delta; //step up fn_val
         count++;
     }
-    cout << endl;
+    
+    if (fileStream != NULL){
+        //need newline at end of loop exection
+        (*fileStream) << endl;
+    }
+
     return;
 }
 
@@ -102,17 +108,11 @@ int main(){
         } else {
             // at this point we have a valid code
 
-
             // if writeDataToFile has been called, record the codes on each line
             if (fileStream != NULL){
                 // fileStream should be opened
                 *fileStream << code << endl;
             }
-
-
-            // if ((*fileStream).is_open()){
-            //     *fileStream << code << endl;
-            // }
 
             // convert code to capital if necessary
             if (code > 96){
@@ -223,6 +223,11 @@ int main(){
             
         }
     
+    }
+
+    if (fileStream != NULL){
+        // close the filestream before exiting
+        (*fileStream).close();
     }
 
     return 0; // for main()
