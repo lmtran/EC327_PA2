@@ -11,26 +11,25 @@ void helperWriteToFile(ofstream* file_pointer, double result){
     if file_pointer = null: just cout
     if file_pointer != null: cout and write to file
     */
-    if (file_pointer == nullptr){
+    if (file_stream.is_open()){
         //just cout
         cout << result << endl;
     } else {
         cout << result << endl;
-        *file_pointer << result << endl;
+        file_stream << result << endl;
     }
     return;
 }
 
-
 //overload to accept int type result
 void helperWriteToFile(int result){
-    if (file_pointer == nullptr){
+    if (file_stream.is_open()){
     //just cout
         cout << result << endl;
     } else {
         cout << result << endl;
-        cout << file_pointer << endl; 
-        (*file_pointer) << result << endl;
+        //cout << file_pointer << endl; 
+        file_stream << result << endl;
     }
     return;
 }
@@ -46,12 +45,12 @@ void executeInLoop(double first, double last, double delta, double(*fn_ptr)(doub
     double fn_val = first; //initially = first
     while (count < ENTRIES && fn_val <= last){
         double result = fn_ptr(fn_val); // call fn with pointer
-//        cout << result << endl; 
+       cout << result << endl; 
 
-        //write to file if filepointer exists
-//        if (file_pointer != nullptr){
-//                *file_pointer << result << endl;
-//            }
+       // write to file if filepointer exists
+    //    if (file_pointer != nullptr){
+    //            *file_pointer << result << endl;
+    //        }
 
         helperWriteToFile(result);
 
@@ -89,6 +88,10 @@ int main(){
             //need to get additional parameters
             cout << "Please enter command parameters: ";
 
+
+            // should add check for entered parameters that are chars --> break !!!!!!!!!!!!!!!!!!!!!!
+
+
             int num;
             string filename; //bc file stuff takes in const char*
             int intFirst, intLast;
@@ -102,7 +105,8 @@ int main(){
                 cin >> filename;
             } else if (code == 'D' || code == 'E'){
                 cin >> intFirst >> intLast;
-            } else {
+            } else if (checkCode(code)) {
+                // any other valid code
                 cin >> doubFirst >> doubLast >> delta;
             }
 
@@ -165,7 +169,6 @@ int main(){
 
                 case 'O':
                     writeDataToFile(filename.c_str());
-                    *file_pointer << "test in main" << endl;
                     break;
 
                 default:

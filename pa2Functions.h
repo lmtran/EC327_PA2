@@ -10,7 +10,7 @@
 using namespace std;
 
 extern const int ENTRIES; //in header file, declaration only
-extern ofstream* file_pointer;
+extern ofstream file_stream;
 
 /* 
 all the function headers for 
