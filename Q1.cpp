@@ -5,40 +5,64 @@
 using namespace std;
 
 bool writeBool = false;
+extern ofstream* fileStream; 
 
 void helperWriteToFile(double result){
     /*
     helper function to determine if pointer is set to null 
-    if file_pointer = null: just cout
-    if file_pointer != null: cout and write to file
+    if file stream not open: just cout
+    if file stream is open: cout and write to file
 
     when passing double, means calling in loop --> separate by spaces
     */
-    if (!fileStream.is_open()){
-        //just cout
-        cout << result << ' ';
-    } else {
-        cout << result << ' ';
-        fileStream << result << ' ';
+
+    if (fileStream != NULL){
+        // fileStream should be opened
+        cout << result << endl;
+        *fileStream << result << endl;
+    } else{
+        cout << result << endl;
     }
+
+    // if (filename == ""){
+    //     // no filename passed, just cout
+    //     cout << result << endl;
+    // } else {
+    //     writeDataToFile(filename.c_str()); //this opens the filestream
+    //     cout << result << endl;
+    //     *fileStream << result << endl;
+    //     (*fileStream).close(); // close the filestream
+    // }
+
     return;
 }
 
 //overload to accept int type result
 void helperWriteToFile(int result){
-    if (!fileStream.is_open()){
-    //just cout
+
+    if (fileStream != NULL){
+        // fileStream should be opened
         cout << result << endl;
-    } else {
+        *fileStream << result << endl;
+    } else{
         cout << result << endl;
-        //cout << file_pointer << endl; 
-        fileStream << result << endl;
     }
+
+    // if (filename == ""){
+    //     // no filename passed, just cout
+    //     cout << result << endl;
+    // } else {
+    //     writeDataToFile(filename.c_str()); //this opens the filestream
+    //     cout << result << endl;
+    //     *fileStream << result << endl;
+    //     (*fileStream).close(); // close the filestream
+    // }
+
     return;
 }
 
 // function to execute in loop
-void executeInLoop(double first, double last, double delta, double(*fn_ptr)(double)){
+void executeInLoop(double first, double last, double delta, double(*fn_ptr)(double), string filename = ""){
     if (delta <= 0 || first > last) {
         cout << "No computation needed." << endl;
         return;
@@ -78,10 +102,17 @@ int main(){
         } else {
             // at this point we have a valid code
 
+
             // if writeDataToFile has been called, record the codes on each line
-            if (fileStream.is_open()){
-                fileStream << code << endl;
+            if (fileStream != NULL){
+                // fileStream should be opened
+                *fileStream << code << endl;
             }
+
+
+            // if ((*fileStream).is_open()){
+            //     *fileStream << code << endl;
+            // }
 
             // convert code to capital if necessary
             if (code > 96){
@@ -97,7 +128,8 @@ int main(){
 
 
             int num;
-            string filename; //bc file stuff takes in const char*
+            // initialize filename to empty string, will be changed if user uses 'O' cmd
+            string filename = ""; // string type bc file stuff takes in const char*
             int intFirst, intLast;
             double doubFirst, doubLast, delta;
 
@@ -146,21 +178,27 @@ int main(){
                     break;
 
                 case 'K':
+                    executeInLoop(doubFirst, doubLast, delta, &lucky);
                     break;
 
                 case 'S':
+                    //sine
                     break;
 
                 case 'N':
+                    //cosine
                     break;
 
                 case 'X':
+                    //exponential
                     break;
 
                 case 'L':
+                    //natural log
                     break;
 
                 case 'Y':
+                    // nyanCat
                     break;
 
                 case 'D':
@@ -186,7 +224,6 @@ int main(){
         }
     
     }
-
 
     return 0; // for main()
 }

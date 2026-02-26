@@ -11,7 +11,7 @@
 using namespace std;
 
 // both defined as extern in header file
-ofstream fileStream; 
+ofstream* fileStream = NULL; 
 extern const int ENTRIES = 10;
 
 
@@ -69,19 +69,9 @@ AFTER this command has been provided. The output being written to a
 file should also be displayed to the console as well. Writing to 
 a file ends when the quit command is provided
 */
-    // ofstream* output = (ofstream*)malloc(sizeof(ofstream)); // create variable for passed filename
-    // cout << "line 72" << endl;
-    // ofstream o = *output;
-    // cout << "line 74 but different" << endl;
-    // o.open(filename); // creates empty file
-    // cout << "line 74" << endl;
-    // file_pointer = output; // glob file_pointer now holds address of output var
-    // cout << "line 76" << endl;
-    // *output << "test" << endl;
-    // cout << "Begin Writing to File " << endl;
-    fileStream.open(filename);
-//    output << "opened output" << endl;
-//    *file_pointer << "test";
+    // create ofstream object on the heap
+    fileStream = new ofstream(filename);
+
 }
 
 void readDataFromFile(const char * filename){
