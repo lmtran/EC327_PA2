@@ -70,15 +70,53 @@ void executeInLoop(double first, double last, double delta, double(*fn_ptr)(doub
     }
 
     int count = 0;
-    double fn_val = first; //initially = first
-    while (count < ENTRIES && fn_val <= last){
-        double result = fn_ptr(fn_val); // call fn with pointer
-//        cout << result << endl;  // debug
+    double fnVal = first; //initially = first
+    while (count < ENTRIES && fnVal <= last){
+        double result = fn_ptr(fnVal); // call fn with pointer
 
         helperWriteToFile(result);
 
-        fn_val += delta; //step up fn_val
+        fnVal += delta; //step up fn_val
         count++;
+    }
+
+    if (fnVal > last && (count+1) < ENTRIES){
+        //if a delta increment exceeds the last value, use last for the final computation
+        fnVal = last;
+        double result = fn_ptr(fnVal); // call fn with pointer
+        helperWriteToFile(result);
+    }
+    
+    if (fileStream != NULL){
+        //need newline at end of loop exection
+        (*fileStream) << endl;
+    }
+
+    return;
+}
+
+void executeInLoopDoMath(double first, double last, double delta, char operation){
+    if (delta <= 0 || first > last) {
+        cout << "No computation needed." << endl;
+        return;
+    }
+
+    int count = 0;
+    double fnVal = first; //initially = first
+    while (count < ENTRIES && fnVal <= last){
+        double result = doMath(fnVal, operation);
+
+        helperWriteToFile(result);
+
+        fnVal += delta; //step up fn_val
+        count++;
+    }
+
+    if (fnVal > last && (count+1) < ENTRIES){
+        //if a delta increment exceeds the last value, use last for the final computation
+        fnVal = last;
+        double result = doMath(fnVal, operation); // call fn with pointer
+        helperWriteToFile(result);
     }
     
     if (fileStream != NULL){
@@ -183,22 +221,27 @@ int main(){
 
                 case 'S':
                     //sine
+                    executeInLoopDoMath(doubFirst, doubLast, delta, 'S');
                     break;
 
                 case 'N':
                     //cosine
+                    executeInLoopDoMath(doubFirst, doubLast, delta, 'C');
                     break;
 
                 case 'X':
                     //exponential
+                    executeInLoopDoMath(doubFirst, doubLast, delta, 'E');
                     break;
 
                 case 'L':
                     //natural log
+                    executeInLoop(doubFirst, doubLast, delta, &naturalLog);
                     break;
 
                 case 'Y':
                     // nyanCat
+                    executeInLoop(doubFirst, doubLast, delta, &findNyanCatValue);
                     break;
 
                 case 'D':
