@@ -12,7 +12,7 @@
 using namespace std;
 
 // both defined as extern in header file
-ofstream* fileStream = NULL; 
+ofstream* fileStream = NULL; //initialize to NULL so that we can check if it's changed
 extern const int ENTRIES = 10;
 
 
@@ -95,11 +95,13 @@ R
     using get line function in <string> lib lets us read a whole line at a time
     so that loop execution displays on one line like in the file
     */
-   
+
     while (getline(input, line)){
         cout << line << endl;
     }
     input.close();
+
+    return;
 }
 
 int factorial(int num){

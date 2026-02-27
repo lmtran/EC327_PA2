@@ -4,7 +4,6 @@
 
 using namespace std;
 
-bool writeBool = false;
 extern ofstream* fileStream; 
 
 void helperWriteToFile(double result){
@@ -24,66 +23,44 @@ void helperWriteToFile(double result){
         cout << result << endl;
     }
 
-    // if (filename == ""){
-    //     // no filename passed, just cout
-    //     cout << result << endl;
-    // } else {
-    //     writeDataToFile(filename.c_str()); //this opens the filestream
-    //     cout << result << endl;
-    //     *fileStream << result << endl;
-    //     (*fileStream).close(); // close the filestream
-    // }
-
     return;
 }
 
 //overload to accept int type result
 void helperWriteToFile(int result){
-
     if (fileStream != NULL){
         // fileStream should be opened
         cout << result << endl;
         *fileStream << result << endl;
-    } else{
+    } else {
         cout << result << endl;
     }
-
-    // if (filename == ""){
-    //     // no filename passed, just cout
-    //     cout << result << endl;
-    // } else {
-    //     writeDataToFile(filename.c_str()); //this opens the filestream
-    //     cout << result << endl;
-    //     *fileStream << result << endl;
-    //     (*fileStream).close(); // close the filestream
-    // }
 
     return;
 }
 
-
 // function to execute in loop
-void executeInLoop(double first, double last, double delta, double(*fn_ptr)(double)){
+void executeInLoop(double first, double last, double delta, double(*fnPtr)(double)){
     if (delta <= 0 || first > last) {
         cout << "No computation needed." << endl;
         return;
     }
 
     int count = 0;
-    double fnVal = first; //initially = first
+    double fnVal = first; //start evaluation with first val
     while (count < ENTRIES && fnVal <= last){
-        double result = fn_ptr(fnVal); // call fn with pointer
+        double result = fnPtr(fnVal); // call fn with pointer
 
         helperWriteToFile(result);
 
-        fnVal += delta; //step up fn_val
+        fnVal += delta; //step up fnVal
         count++;
     }
 
     if (fnVal > last && (count+1) < ENTRIES){
         //if a delta increment exceeds the last value, use last for the final computation
         fnVal = last;
-        double result = fn_ptr(fnVal); // call fn with pointer
+        double result = fnPtr(fnVal); // call fn with pointer
         helperWriteToFile(result);
     }
     
@@ -95,6 +72,7 @@ void executeInLoop(double first, double last, double delta, double(*fn_ptr)(doub
     return;
 }
 
+// special loop execution function for doMath
 void executeInLoopDoMath(double first, double last, double delta, char operation){
     if (delta <= 0 || first > last) {
         cout << "No computation needed." << endl;
@@ -111,9 +89,8 @@ void executeInLoopDoMath(double first, double last, double delta, char operation
         fnVal += delta; //step up fn_val
         count++;
     }
-
+    //if a delta increment exceeds the last value, use last for the final computation 
     if (fnVal > last && (count+1) < ENTRIES){
-        //if a delta increment exceeds the last value, use last for the final computation
         fnVal = last;
         double result = doMath(fnVal, operation); // call fn with pointer
         helperWriteToFile(result);
@@ -124,6 +101,35 @@ void executeInLoopDoMath(double first, double last, double delta, char operation
         (*fileStream) << endl;
     }
 
+    return;
+}
+
+// special loop execution fn for even/odd nums
+void executeInLoopEvenOdd(int first, int last, char operation){
+    int evenNum, oddNum;
+    if (operation == 'E'){
+        //get first even
+        evenNum = findNextEvenValue(first);
+        helperWriteToFile(evenNum);
+        while (evenNum + 2 < last) {
+            helperWriteToFile(evenNum +2);
+            evenNum +=2;
+        }
+        helperWriteToFile(findNextEvenValue(last));
+
+    } else if (operation == 'O') {
+        // get first odd
+        oddNum = findNextOddValue(first);
+        helperWriteToFile(oddNum);
+        while (oddNum + 2 < last) {
+            helperWriteToFile(oddNum +2);
+            oddNum +=2;
+        }
+        helperWriteToFile(findNextOddValue(last));
+
+    } else {
+        cout << "error: not even or odd" << endl;
+    }
     return;
 }
 
@@ -154,7 +160,7 @@ int main(){
 
             // convert code to capital if necessary
             if (code > 96){
-            //char is ascii lowercase
+                //char is ascii lowercase
                 code = code - 32; //adjust
             }
 
@@ -162,7 +168,7 @@ int main(){
             cout << "Please enter command parameters: ";
 
 
-            // should add check for entered parameters that are chars --> break !!!!!!!!!!!!!!!!!!!!!!
+            // should add check for entered parameters that are chars --> break !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
             int num;
@@ -182,40 +188,49 @@ int main(){
             } else if (checkCode(code)) {
                 // any other valid code
                 cin >> doubFirst >> doubLast >> delta;
-            } 
+            } else {
+                cout << "error in collecting parameters" << endl;
+                break;
+            }
 
             // make switch cases for all
-            int ans;
+            int ans; // the output of a pa2Function call
+
             switch (code) {
                 case 'F':
+                    // factorial
                     ans = factorial(num);
-                    //cout << ans << endl;
                     helperWriteToFile(ans);
                     break;
 
                 case 'B':
+                    // fibonacci
                     ans = fibonacci(num);
-                    //cout << ans << endl;
                     helperWriteToFile(ans);
                     break;
 
                 case 'R':
+                    // sqrt
                     executeInLoop(doubFirst, doubLast, delta, &findSqrtValue);
                     break;
 
                 case 'U':
+                    // area of a square
                     executeInLoop(doubFirst, doubLast, delta, &areaSquare);
                     break;
 
                 case 'C':
+                    // area of a circle
                     executeInLoop(doubFirst, doubLast, delta, &areaCircle);
                     break;
 
                 case 'E':
-                    //special case
+                    //special case - even nums
+                    executeInLoopEvenOdd(intFirst, intLast, 'E');
                     break;
 
                 case 'K':
+                    //lucky
                     executeInLoop(doubFirst, doubLast, delta, &lucky);
                     break;
 
@@ -245,7 +260,8 @@ int main(){
                     break;
 
                 case 'D':
-                    // special case
+                    // special case - odd nums
+                    executeInLoopEvenOdd(intFirst, intLast, 'O');
                     break;
 
                 case 'I':
@@ -253,7 +269,6 @@ int main(){
                     break;
 
                 case 'O':
-                    writeBool = true;
                     writeDataToFile(filename.c_str());
                     break;
 
@@ -268,8 +283,8 @@ int main(){
     
     }
 
+    // close the filestream before exiting
     if (fileStream != NULL){
-        // close the filestream before exiting
         (*fileStream).close();
     }
 
